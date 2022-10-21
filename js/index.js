@@ -29,10 +29,34 @@ let fruits = JSON.parse(fruitsJSON);
 const display = () => {
   // TODO: очищаем fruitsList от вложенных элементов,
   // чтобы заполнить актуальными данными из fruits
+    
+  fruitsList.innerHTML = "";
 
   for (let i = 0; i < fruits.length; i++) {
     // TODO: формируем новый элемент <li> при помощи document.createElement,
     // и добавляем в конец списка fruitsList при помощи document.appendChild
+    let itemList = document.createElement('li');
+    itemList.className = 'fruit__item';
+    fruitsList.appendChild(itemList);
+    let divInfo = document.createElement('div');
+    divInfo.className = 'fruit__info';
+    itemList.appendChild(divInfo);
+    let indexDiv = document.createElement('div');
+    let kindDiv = document.createElement('div');
+    let colorDiv = document.createElement('div');
+    let weightDiv = document.createElement('div');
+    let indexText = document.createTextNode(`index: ${[i]}`);
+    let kindText = document.createTextNode(`kind: ${fruits[i].kind}`);
+    let colorText = document.createTextNode(`color: ${fruits[i].color}`);
+    let weightText = document.createTextNode(`weight: ${fruits[i].weight}`);
+    indexDiv.appendChild(indexText);
+    kindDiv.appendChild(kindText);
+    colorDiv.appendChild(colorText);
+    weightDiv.appendChild(weightText);
+    divInfo.appendChild(indexDiv);
+    divInfo.appendChild(kindDiv);
+    divInfo.appendChild(colorDiv);
+    divInfo.appendChild(weightDiv);
   }
 };
 
@@ -89,11 +113,31 @@ let sortTime = '-'; // инициализация состояния време�
 
 const comparationColor = (a, b) => {
   // TODO: допишите функцию сравнения двух элементов по цвету
+  if (a.color === b.color) {
+    return 0;
+  } else if (a.color > b.color) {
+    return 1;
+  } else {
+    return -1;
+  }
 };
 
 const sortAPI = {
-  bubbleSort(arr, comparation) {
+  bubbleSort(fruits, comparation = comparationColor) {
     // TODO: допишите функцию сортировки пузырьком
+    const n = fruits.length;
+    for (let i = 0; i < n - 1; i++) {
+      // внутренняя итерация для перестановки элемента в конец массива
+      for (let j = 0; j < n - 1 - i; j++) {
+        // сравниваем элементы
+        if (comparation(fruits[j], fruits[j + 1]) === 1) {
+          // делаем обмен элементов
+          let temp = fruits[j + 1];
+          fruits[j + 1] = fruits[j];
+          fruits[j] = temp;
+        }
+      }
+    }
   },
 
   quickSort(arr, comparation) {
